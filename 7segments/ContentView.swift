@@ -9,12 +9,13 @@ import SwiftUI
 
 struct SevenSegmentView: View {
     let isSegmentOn: Bool
+    let onColor: Color
     let width: CGFloat
     let height: CGFloat
     
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
-            .fill(isSegmentOn ? Color.red : Color.gray)
+            .fill(isSegmentOn ? onColor : Color.gray)
 //            .frame(width: 20, height: 80)
          .frame(width: width, height: height)
     }
@@ -23,6 +24,7 @@ struct SevenSegmentView: View {
 struct SevenSegmentSpotView: View{
     
     let digit: Int
+    let onColor: Color
     
     let segments: [[Bool]] = [
         [true, true, true, true, true, true, false],  // 0
@@ -41,26 +43,26 @@ struct SevenSegmentSpotView: View{
     var body: some View{
         VStack(spacing: 0){
             // a
-            SevenSegmentView(isSegmentOn: segments[digit][0], width: 40, height: 10)
+            SevenSegmentView(isSegmentOn: segments[digit][0], onColor: onColor, width: 40, height: 10)
             HStack{
                 // f
-                SevenSegmentView(isSegmentOn: segments[digit][5], width: 10, height: 40)
+                SevenSegmentView(isSegmentOn: segments[digit][5], onColor: onColor, width: 10, height: 40)
                 Spacer().frame(width: 40)
                 // b
-                SevenSegmentView(isSegmentOn: segments[digit][1], width: 10, height: 40)
+                SevenSegmentView(isSegmentOn: segments[digit][1], onColor: onColor, width: 10, height: 40)
             }
             // g
-            SevenSegmentView(isSegmentOn: segments[digit][6], width: 40, height: 10)
+            SevenSegmentView(isSegmentOn: segments[digit][6], onColor: onColor, width: 40, height: 10)
             
             HStack(){
                 // e
-                SevenSegmentView(isSegmentOn: segments[digit][4], width: 10, height: 40)
+                SevenSegmentView(isSegmentOn: segments[digit][4], onColor: onColor, width: 10, height: 40)
                 Spacer().frame(width: 40)
                 // c
-                SevenSegmentView(isSegmentOn: segments[digit][2], width: 10, height: 40)
+                SevenSegmentView(isSegmentOn: segments[digit][2], onColor: onColor, width: 10, height: 40)
             }
             // d
-            SevenSegmentView(isSegmentOn: segments[digit][3], width: 40, height: 10)
+            SevenSegmentView(isSegmentOn: segments[digit][3], onColor: onColor, width: 40, height: 10)
             
         }
     }
@@ -88,6 +90,8 @@ struct ContentView: View {
     @State var timer: Timer?
     @State var c1: Int = 0
     @ObservedObject var time = NowDateTimer()
+
+    @State private var segmentColor: Color = .red
     
     @State var a:Int = 0
     @State var b:Int = 0
@@ -99,15 +103,17 @@ struct ContentView: View {
     
     var body: some View {
         VStack{
+            ColorPicker("セグメント色", selection: $segmentColor)
+                .padding(.bottom, 12)
             HStack(){
-                SevenSegmentSpotView(digit: a)
-                SevenSegmentSpotView(digit: b)
+                SevenSegmentSpotView(digit: a, onColor: segmentColor)
+                SevenSegmentSpotView(digit: b, onColor: segmentColor)
                 Spacer().frame(width: 30)
-                SevenSegmentSpotView(digit: c)
-                SevenSegmentSpotView(digit: d)
+                SevenSegmentSpotView(digit: c, onColor: segmentColor)
+                SevenSegmentSpotView(digit: d, onColor: segmentColor)
                 Spacer().frame(width: 30)
-                SevenSegmentSpotView(digit: e)
-                SevenSegmentSpotView(digit: f)
+                SevenSegmentSpotView(digit: e, onColor: segmentColor)
+                SevenSegmentSpotView(digit: f, onColor: segmentColor)
             }.onAppear{
                 Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.time.h = Date()
