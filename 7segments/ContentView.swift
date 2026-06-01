@@ -103,6 +103,7 @@ struct ContentView: View {
     var body: some View {
         VStack{
             ColorPicker("セグメント色", selection: $segmentColor)
+                .fixedSize()
                 .padding(.bottom, 12)
             HStack(){
                 SevenSegmentSpotView(digit: a, onColor: segmentColor)
