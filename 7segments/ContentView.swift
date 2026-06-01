@@ -16,8 +16,7 @@ struct SevenSegmentView: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
             .fill(isSegmentOn ? onColor : Color.gray)
-//            .frame(width: 20, height: 80)
-         .frame(width: width, height: height)
+            .frame(width: width, height: height)
     }
 }
 
